@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+	// 本番環境(Heroku)でhttpsを強制する
+        if (\App::environment('production')) {
+            \URL::forceScheme('https');
+        }
+
         \DB::listen(function ($query) {
             $sql =$query->sql;
             for ($i = 0; $i < count($query->bindings); $i++) {
